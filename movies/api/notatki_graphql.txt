@@ -1,0 +1,38 @@
+query {
+  allMovies {
+    id
+    title
+    year
+  }
+}
+
+# nie trzeba w nowej lini - wystarczą spacje
+query {
+  allMovies {title year}
+}
+
+############## QUERY PARAMS ##############
+# film o id równym 1
+
+query {
+  movie(id:1) {
+    title
+    year
+  }
+}
+
+query {
+  movie(id:1) {
+    id
+    title
+    year
+  }
+}
+
+# trzbea podwójny cudzysłów do stringów
+query {
+  movie(title:"Titanic") {
+    title
+    year
+  }
+}
