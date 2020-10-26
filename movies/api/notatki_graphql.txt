@@ -93,3 +93,86 @@ query {
     surname
   }
 }
+
+
+##############################################
+query {
+  movie(id:1){
+    id
+    title
+    director{
+      name
+      surname
+    }
+  }
+  movie(id:2){
+    title
+    id
+    director{
+      name
+      surname
+    }
+  }
+}
+
+# Zwórić błąd, bo movies to jak funkcja anonimowa -konflikt nazw
+{
+  "errors": [
+    {
+      "message": "Fields \"movie\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        },
+        {
+          "line": 10,
+          "column": 3
+        }
+      ]
+    }
+  ]
+}
+
+#### ALIAS
+#rozwiązanie - aliasy (ale nadmiarowy kod)
+query {
+  firstMovie: movie(id:1){
+    id
+    title
+    director{
+      name
+      surname
+    }
+  }
+  secondMovie: movie(id:2){
+    title
+    id
+    director{
+      name
+      surname
+    }
+  }
+}
+
+
+
+#### FRAGMENT
+##... wypakowuje
+query {
+  firstMovie: movie(id:1){
+    ...movieData
+  }
+  secondMovie: movie(id:2){
+		...movieData
+  }
+}
+
+fragment movieData on MovieType{
+    id
+    title
+    director{
+      name
+      surname
+    }
+}
