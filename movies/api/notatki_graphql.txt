@@ -36,3 +36,19 @@ query {
     year
   }
 }
+
+
+############################
+dynamiczne dodatkowe dane nie z bazy
+
+query {
+  allMovies{
+    id
+    title
+    year
+    movieAge
+  }
+}
+
+
+########################
