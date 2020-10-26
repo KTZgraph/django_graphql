@@ -52,3 +52,44 @@ query {
 
 
 ########################
+multiple models
+
+query {
+  allMovies{
+    id
+    title
+    year
+    movieAge
+    director {
+      id
+      name
+      surname
+    }
+  }
+}
+
+#pojedynczy film
+query {
+  movie(id:4){
+    id
+    title
+    year
+    movieAge
+    director {
+      id
+      name
+      surname
+    }
+  }
+}
+
+
+# inny model
+query {
+
+  allDirectors{
+    id
+    name
+    surname
+  }
+}
