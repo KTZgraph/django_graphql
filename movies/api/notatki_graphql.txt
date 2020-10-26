@@ -176,3 +176,76 @@ fragment movieData on MovieType{
       surname
     }
 }
+
+# dodawanie nazwy do Query jest dobrą praktyką do debugoowania i czytelności
+# można dizelić na mniejsze query
+query MoviesAndDirectors{
+ allMovies{
+    title
+    year
+  	director{
+    	surname
+  	}
+  }
+}
+
+query JustMovies{
+ allMovies{
+    title
+    year
+  }
+}
+
+
+# variables
+query MovieAndDirector($id:Int) {
+ movie(id: $id){
+  	id
+    title
+    year
+  	director{
+    	surname
+  	}
+  }
+}
+
+
+# okn Query Variables
+{
+  "id":2
+}
+
+
+
+
+
+----------------------------
+# @include
+query MovieAndDirector($id:Int, $showdirector: Boolean=false) {
+ movie(id: $id){
+  	id
+    title
+    year
+  	director @include(if: $showdirector){
+    	surname
+  	}
+  }
+}
+
+{
+  "id":4,
+  "showdirector": true
+}
+
+# @skip na odwrót nie wyświetla gdy warunek prawdziwy
+query MovieAndDirector($id:Int, $showdirector: Boolean=false) {
+ movie(id: $id){
+  	id
+    title
+    year
+  	director @skip(if: $showdirector){
+    	surname
+  	}
+  }
+}
+
