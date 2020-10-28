@@ -298,3 +298,12 @@ mutation UpdateMovie{
     }
   }
 }
+
+##### JWT
+#pobieranie tokenu
+mutation getToken {
+  tokenAuth(username:"admin", password:"admin"){
+    token
+  }
+}
+
