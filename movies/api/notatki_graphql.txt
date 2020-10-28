@@ -249,3 +249,36 @@ query MovieAndDirector($id:Int, $showdirector: Boolean=false) {
   }
 }
 
+###########################################
+###################  MUTACJE  ########################
+
+#nowa mutacja
+mutation {
+  createMovie(title:"Test", year:2002){
+    movie{
+      id
+      title
+      year
+    }
+  }
+}
+
+#jak jest mutacja i quwry to trzeba je nazwac
+# interfejs pozwala wybrać którą uruchomić (czy quey czy mutation)
+mutation CreateMovie{
+  createMovie(title:"Test", year:2002){
+    movie{
+      id
+      title
+      year
+    }
+  }
+}
+
+query AllMovies{
+  allMovies{
+    id
+    title
+    year
+  }
+}

@@ -31,7 +31,7 @@ class Query(graphene.ObjectType):
     def resolve_all_directors(self, info, **kwargs): # dodatkowe argumenty na pozniej
         return Director.objects.all()
 
-    def resolve_movie(self, info, **kwargs): # dodatkowe argumenty na pozniej
+    def resolve_movie(self, info, **kwargs): # dodatkowe argumenty na pozniej można id, title zamiast **kwargs
         movie_id = kwargs.get('id')
         title = kwargs.get('title')
 
@@ -42,3 +42,19 @@ class Query(graphene.ObjectType):
             return Movie.objects.get(title=title)
 
         return None
+
+
+class MovieCreateMutation(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        year = graphene.Int(required=True)
+
+    movie = graphene.Field(MovieType)
+
+    def mutate(self, info, title, year): #zamiast **kwargs
+        movie = Movie.objects.create(title=title, year=year)
+
+        return MovieCreateMutation(movie=movie)
+
+class Mutation:
+    create_movie = MovieCreateMutation.Field() #dla jednego pecyficznego rekordu
