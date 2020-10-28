@@ -307,3 +307,111 @@ mutation getToken {
   }
 }
 
+
+############################################
+#################   RELAY #######################
+query AllMovies{
+  allMovies {
+    edges{
+      node{
+        id
+        title
+      }
+    }
+  }
+}
+
+# zwraca inne id niż integery i trochę inny format zwrotu
+- zwraca tablicę nodów
+{
+  "data": {
+    "allMovies": {
+      "edges": [
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjE=",
+            "title": "Titanic"
+          }
+        },
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjI=",
+            "title": "The Terminator"
+          }
+        },
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjM=",
+            "title": "Million Dollar Baby"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+# ale id reżyserów sa normalnie
+query AllMovies{
+  allMovies {
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+
+{
+  "data": {
+    "allMovies": {
+      "edges": [
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjE=",
+            "title": "Titanic",
+            "year": 1997,
+            "director": {
+              "id": "1",
+              "name": "James",
+              "surname": "Cameron"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjI=",
+            "title": "The Terminator",
+            "year": 1984,
+            "director": {
+              "id": "1",
+              "name": "James",
+              "surname": "Cameron"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "TW92aWVOb2RlOjM=",
+            "title": "Million Dollar Baby",
+            "year": 2000,
+            "director": {
+              "id": "2",
+              "name": "Clint",
+              "surname": "Eastwood"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
