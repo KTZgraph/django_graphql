@@ -1,5 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
+import graphql_jwt
 from .models import Director, Movie
 
 
@@ -93,6 +94,8 @@ class MovieDeleteMutation(graphene.Mutation):
 
 class Mutation:
     #głowna klasa mutacji
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field() #token z loginu i hasła użytkownika
+
     create_movie = MovieCreateMutation.Field() #dla jednego pecyficznego rekordu
     update_movie = MovieUpdateMutation.Field()
     delete_movie = MovieDeleteMutation.Field()
