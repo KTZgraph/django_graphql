@@ -249,9 +249,13 @@ query MovieAndDirector($id:Int, $showdirector: Boolean=false) {
   }
 }
 
-###########################################
+
+
+######################################################################################
+######################################################################################
 ###################  MUTACJE  ########################
 
+##############createMutation
 #nowa mutacja
 mutation {
   createMovie(title:"Test", year:2002){
@@ -280,5 +284,17 @@ query AllMovies{
     id
     title
     year
+  }
+}
+
+
+########## Update mutation
+mutation UpdateMovie{
+  updateMovie(id:5, title:"Test2", year:1990){
+    movie{
+      id
+      title
+      year
+    }
   }
 }

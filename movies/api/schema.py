@@ -52,9 +52,33 @@ class MovieCreateMutation(graphene.Mutation):
     movie = graphene.Field(MovieType)
 
     def mutate(self, info, title, year): #zamiast **kwargs
+        #nasza logika
         movie = Movie.objects.create(title=title, year=year)
+        if title is not None:
+            movie.title = title
+        if year is not None:
+            movie.year = year
+        movie.save()
+
+        return MovieUpdateMutation(movie=movie)
+
+
+class MovieUpdateMutation(graphene.Mutation):
+    class Arguments:
+        title = graphene.String()
+        year = graphene.Int()
+        id = graphene.ID(required=True)
+
+    movie = graphene.Field(MovieType)
+
+    def mutate(self, info, id, title, year):
+        #try catch dopisać
+        movie = Movie.objects.get(pk=id)
 
         return MovieCreateMutation(movie=movie)
 
+
 class Mutation:
+    #głowna klasa mutacji
     create_movie = MovieCreateMutation.Field() #dla jednego pecyficznego rekordu
+    update_movie = MovieUpdateMutation.Field()
