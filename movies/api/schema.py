@@ -27,7 +27,12 @@ class DirectorType(DjangoObjectType): # podobnie do serializer
 class MovieNode(DjangoObjectType):
     class Meta:
         model = Movie
-        filter_fields = ['title', 'year']
+        #dodanie filtró dla pól, custom way to get datd
+        #Filtr icontains - incase sensitive
+        filter_fields = {
+            'title': ["exact", "icontains", "istartswith"],
+            'year': ["exact",]
+        }
         interfaces = (relay.Node, ) #this django object witl be relay
 
 
@@ -35,7 +40,8 @@ class MovieNode(DjangoObjectType):
 class Query(graphene.ObjectType):
     # all_movies = graphene.List(MovieType)
     all_movies =DjangoFilterConnectionField(MovieNode)
-    movie = graphene.Field(MovieType, id=graphene.Int(), title=graphene.String()) #aceptujemy parametr id typu Integer, tytul String
+    #movie = graphene.Field(MovieType, id=graphene.Int(), title=graphene.String()) #aceptujemy parametr id typu Integer, tytul String
+    movie = relay.Node.Field(MovieNode)
 
     all_directors = graphene.List(DirectorType)
 
@@ -52,6 +58,8 @@ class Query(graphene.ObjectType):
     def resolve_all_directors(self, info, **kwargs): # dodatkowe argumenty na pozniej
         return Director.objects.all()
 
+    """
+        # zastapoione przez movie = relay.Node.Field(MovieNode)
     def resolve_movie(self, info, **kwargs): # dodatkowe argumenty na pozniej można id, title zamiast **kwargs
         movie_id = kwargs.get('id')
         title = kwargs.get('title')
@@ -63,7 +71,7 @@ class Query(graphene.ObjectType):
             return Movie.objects.get(title=title)
 
         return None
-
+    """
 
 class MovieCreateMutation(graphene.Mutation):
     class Arguments:

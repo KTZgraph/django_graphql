@@ -310,6 +310,8 @@ mutation getToken {
 
 ############################################
 #################   RELAY #######################
+- lepsza implementacja, łatwiejsza czytelniejsza
+
 query AllMovies{
   allMovies {
     edges{
@@ -415,3 +417,101 @@ query AllMovies{
     }
   }
 }
+
+
+
+#### filters
+query GetMovie{
+  movie(id:"TW92aWVOb2RlOjE="){
+    id
+    title
+    year
+  }
+}
+
+{
+  "data": {
+    "movie": {
+      "id": "TW92aWVOb2RlOjE=",
+      "title": "Titanic",
+      "year": 1997
+    }
+  }
+}
+
+
+#po tytule - i zwróci tylko jeden film, filt "exact"
+query AllMovies{
+  allMovies (title: "Titanic"){
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+##3wszystkie tytuły które zawierają litere "a"
+query AllMovies{
+  allMovies (title_Icontains:"a" ){
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+pole_Icontains - filt "icontains"
+
+# tytułu ze słowem "Baby"
+query AllMovies{
+  allMovies (title_Icontains:"Baby" ){
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+# to samo co wyżej - odporny na wielkosć liter
+query AllMovies{
+  allMovies (title_Icontains:"baby" ){
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+
