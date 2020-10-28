@@ -526,3 +526,162 @@ mutation MutateRelay {
     }
   }
 }
+
+####### paginacja
+# limitowanie wyników - jeśli liczba wieksza od danych w bazie wysietla wszystko
+query AllMovies{
+  allMovies (first: 5){
+    edges{
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+query AllMovies{
+  allMovies (first: 2){
+    pageInfo{
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges{
+      cursor
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+
+zwróci paginacje
+{
+  "data": {
+    "allMovies": {
+      "pageInfo": {
+        "startCursor": "YXJyYXljb25uZWN0aW9uOjA=",
+        "endCursor": "YXJyYXljb25uZWN0aW9uOjE=",
+        "hasNextPage": true,
+        "hasPreviousPage": false
+      },
+      "edges": [
+        {
+          "cursor": "YXJyYXljb25uZWN0aW9uOjA=",
+          "node": {
+            "id": "TW92aWVOb2RlOjE=",
+            "title": "Titanic",
+            "year": 1997,
+            "director": {
+              "id": "1",
+              "name": "James",
+              "surname": "Cameron"
+            }
+          }
+        },
+        {
+          "cursor": "YXJyYXljb25uZWN0aW9uOjE=",
+          "node": {
+            "id": "TW92aWVOb2RlOjI=",
+            "title": "The Terminator",
+            "year": 1984,
+            "director": {
+              "id": "1",
+              "name": "James",
+              "surname": "Cameron"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+można wykorzytsać id ostatniego wyświetlonego noda żeby dostać kolejne dane
+query AllMovies{
+  allMovies (first: 2, after:"YXJyYXljb25uZWN0aW9uOjE="){
+    pageInfo{
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges{
+      cursor
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
+albo brac tylko pierwszy po nodeID
+query AllMovies{
+  allMovies (first: 1, after:"YXJyYXljb25uZWN0aW9uOjA="){
+    pageInfo{
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges{
+      cursor
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+# filtry też wbudowane i relay to ma w odóżnieniu od graphene django
+query AllMovies{
+  allMovies (first: 10){
+    pageInfo{
+      startCursor
+      hasNextPage
+    }
+    edges{
+      cursor
+      node{
+        id
+        title
+        year
+          director{
+            id
+            name
+            surname
+        }
+      }
+    }
+  }
+}
+
