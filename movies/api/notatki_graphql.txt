@@ -515,3 +515,14 @@ query AllMovies{
 }
 
 
+###### relay mutacje
+mutation MutateRelay {
+  updateMovieRelay(input: {id: "TW92aWVOb2RlOjE=", title:"Test relay mutation"})
+  {
+    movie{
+      id
+      title
+      year
+    }
+  }
+}

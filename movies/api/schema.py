@@ -4,6 +4,7 @@ from graphene_django.types import DjangoObjectType
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 from graphene_django.filter import DjangoFilterConnectionField
+from graphql_relay import from_global_id #do mutacji relay
 from .models import Director, Movie
 
 
@@ -107,6 +108,40 @@ class MovieUpdateMutation(graphene.Mutation):
         return MovieCreateMutation(movie=movie)
 
 
+#relay implementation
+class MovieUpdateMutationRelay(relay.ClientIDMutation):
+    """
+    :example:
+    mutation MutateRelay {
+          updateMovieRelay(input: {id: "TW92aWVOb2RlOjE=", title:"Test relay mutation"})
+          {
+            movie{
+              id
+              title
+              year
+            }
+          }
+        }
+    """
+    class Input:
+        title = graphene.String()
+        id = graphene.ID(required=True)
+
+    movie = graphene.Field(MovieType)
+
+    @classmethod #relay - trzbea nadpisac roznice
+    def mutate_and_get_payload(cls, root,  info, id, title):
+        #try catch dopisać
+        #id dla relay jest inne - jest to long string characters
+        movie = Movie.objects.get(pk=from_global_id(id)[1]) #jedyna różnica w wcyiagnaiu id z nodów relay
+
+        if title is not None:
+            movie.title = title
+        movie.save()
+
+        return MovieUpdateMutationRelay(movie=movie)
+
+
 class MovieDeleteMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
@@ -127,4 +162,5 @@ class Mutation:
 
     create_movie = MovieCreateMutation.Field() #dla jednego pecyficznego rekordu
     update_movie = MovieUpdateMutation.Field()
+    update_movie_relay = MovieUpdateMutationRelay.Field() #dal relay
     delete_movie = MovieDeleteMutation.Field()
