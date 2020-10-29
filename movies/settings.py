@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 # nie trzeba - można manualnie do urli dodać
 GRAPHENE = { #https://django-graphql-jwt.domake.io/en/latest/quickstart.html#installation
     "SCHEMA": 'movies.schema.schema',
+    "SCHEMA_OUTPUT": "data/myschema.json", #jak chcemy inna sniezke niz koło manage.py, folder trzeba recznie zrobic
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
